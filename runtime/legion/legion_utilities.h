@@ -989,7 +989,11 @@ namespace Legion {
       deserialize(dom.is_id);
       if (dom.is_id > 0)
         deserialize(dom.is_type);
+#if defined(__CUDA_ARCH__) || defined(__HIP_DEVICE_COMPILE__)
+      deserialize(const_cast<int&>(dom.dim));
+#else
       deserialize(dom.dim);
+#endif
       for (int i = 0; i < 2*dom.dim; i++)
         deserialize(dom.rect_data[i]);
     }
